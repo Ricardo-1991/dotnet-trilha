@@ -11,13 +11,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ResTIConnect", "ResTIConnec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResTIConnect.Domain", "ResTIConnect\ResTIConnect.Domain\ResTIConnect.Domain.csproj", "{81C2C136-161A-4B3A-824A-BB9E47D77C1B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TechMed", "TechMed", "{45E8231D-0918-4F61-905A-CDB8C472406E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechMed_EFCore", "TechMed\TechMed\TechMed_EFCore.csproj", "{464B12F3-B16B-4CCA-A5D0-E5BB5F79ECAE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{11041DD6-9A55-4B27-91F3-FCF6A4FC8FFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -32,8 +33,16 @@ Global
 		{81C2C136-161A-4B3A-824A-BB9E47D77C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81C2C136-161A-4B3A-824A-BB9E47D77C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81C2C136-161A-4B3A-824A-BB9E47D77C1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{464B12F3-B16B-4CCA-A5D0-E5BB5F79ECAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{464B12F3-B16B-4CCA-A5D0-E5BB5F79ECAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{464B12F3-B16B-4CCA-A5D0-E5BB5F79ECAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{464B12F3-B16B-4CCA-A5D0-E5BB5F79ECAE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{81C2C136-161A-4B3A-824A-BB9E47D77C1B} = {638FAE08-EBD3-4080-9AFE-CA036B689BF4}
+		{464B12F3-B16B-4CCA-A5D0-E5BB5F79ECAE} = {45E8231D-0918-4F61-905A-CDB8C472406E}
 	EndGlobalSection
 EndGlobal
