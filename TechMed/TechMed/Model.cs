@@ -6,10 +6,12 @@ public class TechMedContext : DbContext
 
     public DbSet<Medico> Medicos { get; set; }
     public DbSet<Paciente> Pacientes { get; set; }
+    public DbSet<Atendimento> Atendimentos { get; set; }
+    public DbSet<Exame> Exames { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
-        var connectionString = "server=localhost;user=techmed;password=123456;database=techmed";
+        var connectionString = "server=localhost;user=root;password=Ricardo_dev_1991;database=techmed";
         var serverVersion = ServerVersion.AutoDetect(connectionString);
         
         optionsBuilder.UseMySql(connectionString, serverVersion);
@@ -21,6 +23,7 @@ public class TechMedContext : DbContext
         modelBuilder.Entity<Medico>().ToTable("Medicos").HasKey(m => m.Id);
         modelBuilder.Entity<Paciente>().ToTable("Pacientes").HasKey(p => p.Id);
         modelBuilder.Entity<Atendimento>().ToTable("Antendimentos").HasKey(p => p.Id);
+        modelBuilder.Entity<Exame>().ToTable("Exames").HasKey(p => p.Id);
 
         modelBuilder.Entity<Atendimento>()
         .HasOne(a => a.Medico)
@@ -34,8 +37,7 @@ public class TechMedContext : DbContext
 
         modelBuilder.Entity<Atendimento>()
         .HasMany(a => a.Exames)
-        .WithOne(x => x.Atendimento)
-        .HasForeignKey(a => a.AtendimentoId);
+        .WithMany(a => a.Atendimentos);
     }
 }
 
@@ -49,13 +51,13 @@ public class Medico : Pessoa{
     required public string CRM {get; set;}
     required public string Especialidade {get; set;}
     public decimal Salario {get; set;}
-    public List<Atendimento> Atendimentos { get; set; }
+    public ICollection<Atendimento>? Atendimentos { get; set; }
 }
 
 public class Paciente : Pessoa{
     public string? Endereco {get; set;}
     public string? Telefone {get; set;}
-    public List<Atendimento> Atendimentos { get; set; }
+    public ICollection<Atendimento>? Atendimentos { get; set; }
 }
 
 
@@ -65,7 +67,7 @@ public class Exame {
     public string Tipo { get; set; }
     public decimal Preco { get; set; }
     public int AtendimentoId { get; set; }
-    public Atendimento Atendimento { get; set; }
+    required public ICollection<Atendimento> Atendimentos { get; set; }
 }
 
 public class Atendimento {
@@ -73,8 +75,8 @@ public class Atendimento {
     public DateTime DataHora { get; set; }
     public int MedicoId { get; set; }
     public int PacienteId { get; set; }
-    public Medico Medico { get; set; }
-    public Paciente Paciente { get; set; }
-    public List<Exame> Exames { get; set; }
+    public required Medico Medico { get; set; }
+    public required Paciente Paciente { get; set; }
+    public ICollection<Exame>? Exames { get; set; }
 }
 
