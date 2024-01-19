@@ -1,84 +1,70 @@
 using Microsoft.AspNetCore.Mvc;
+using TechMed.WebAPI.Infra.Data.Interfaces;
+using TechMed.WebAPI.Model;
 
 namespace TechMed.WebAPI.Controllers;
 
 [ApiController]
-[Route("/api/v.1/")]
-public class MedicoController : ControllerBase {
+[Route("/api/v0.1/")]
+public class MedicoController : ControllerBase
+{
+   private readonly IMedicoCollection _medicos;
+   public List<Medico> Medicos => _medicos.GetAll().ToList();
+   public MedicoController(IMedicoCollection medicos) => _medicos = medicos;
 
-    private static readonly string[] Doctors = new[]
-    {
-        "Dr Alex", "Dr Guilherme", "Dra Caroline"
-    };
+   [HttpGet("medicos")]
+   public IActionResult Get()
+   {
+      return Ok(Medicos);
+   }
 
-     private readonly ILogger<MedicoController> _logger;
+   [HttpGet("medico/{id}")]
+   public IActionResult GetById(int id)
+   {
+      var medico = _medicos.GetById(id);
+      return Ok(medico);
+   }
 
-     public MedicoController(ILogger<MedicoController> logger){
-        _logger = logger;
-     }
+   [HttpPost("medico")]
+   public IActionResult Post([FromBody] Medico medico)
+   {
+      _medicos.Create(medico);
+      return CreatedAtAction(nameof(Get),  medico);
+   }
 
-      [HttpGet("medicos")]
-     public IActionResult Get(){
-        var medicos = Enumerable.Range(0, 3).Select(index => new Medico{
-            Id = Guid.NewGuid(),
-            Name = Doctors[index],
-            Especialidade = "Clinico Geral"
-        })
-        .ToArray();
-        return Ok(medicos);
-     }
+   [HttpPut("medico/{id}")]
+   public IActionResult Put(int id, [FromBody] Medico medico)
+   {
+      if (_medicos.GetById(id) == null)
+         return NoContent();
+      _medicos.Update(id, medico);
+      return Ok(_medicos.GetById(id));
+   }
 
-     [HttpDelete("/{id}")]
-     public IActionResult Delete(Guid? id){
-         if(id is null) return BadRequest();
+   [HttpDelete("medico/{id}")]
+   public IActionResult Delete(int id)
+   {
+      if (_medicos.GetById(id) == null)
+         return NoContent();
+      _medicos.Delete(id);
+      return Ok();
+   }
 
-        var medicos = Enumerable.Range(0, 3).Select(index => new Medico{
-            Id = Guid.NewGuid(),
-            Name = Doctors[index],
-            Especialidade = "Clinico Geral"
-        })
-        .ToArray();
-        var deletedDoctor = medicos[0].Id;
-        id = deletedDoctor;
-        var newMedicos = medicos.Where(m => m.Id != id);
-        return Ok(newMedicos);
-     }
-
-     [HttpPut("/{id}")]
-       public IActionResult Put(Guid? id){
-         if(id is null) return BadRequest();
-
-        var medicos = Enumerable.Range(0, 3).Select(index => new Medico{
-            Id = Guid.NewGuid(),
-            Name = Doctors[index],
-            Especialidade = "Clinico Geral"
-        })
-        .ToArray();
-        var updatedDoctor = medicos[0].Id;
-        id = updatedDoctor;
-        foreach(var medico in medicos){
-            if(medico.Id == id){
-                medico.Name = "Novo Nome";
-            }
-        }
-        return Ok(medicos);
-     }
-
-     [HttpPost]
-       public IActionResult Post(){
-        var medicos = Enumerable.Range(0, 3).Select(index => new Medico{
-            Id = Guid.NewGuid(),
-            Name = Doctors[index],
-            Especialidade = "Clinico Geral"
-        })
-        .ToArray();
-        
-       var newMedico = medicos.Append(new Medico{
-            Id = Guid.NewGuid(),
-            Name = "Dr Paulo",
-            Especialidade = "Clinico Geral"
-        });
-
-        return Ok(newMedico);
-     }
+   // [HttpGet("medico/{id}/atendimentos")]
+   // public IActionResult GetAtendimentos(int id)
+   // {
+   //    var atendimento = Enumerable.Range(1, 5).Select(index => new Atendimento
+   //      {
+   //          AtendimentoId = index,
+   //          DataHora = DateTime.Now,
+   //          MedicoId = id,
+   //          Medico = new Medico
+   //          {
+   //              MedicoId = id,
+   //              Nome = $"Medico {id}"
+   //          }
+   //      })
+   //      .ToArray();
+   //    return Ok(atendimento);
+   // }
 }
