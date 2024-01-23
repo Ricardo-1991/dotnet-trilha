@@ -9,7 +9,7 @@ namespace TechMed.WebAPI.Controllers;
 public class MedicoController : ControllerBase
 {
    private readonly IMedicoCollection _medicos;
-   public List<Medico> Medicos => _medicos.GetAll().ToList();
+   public List<Medico> Medicos => _medicos.GetAll().ToList();                                                                                                                                       
    public MedicoController(IMedicoCollection medicos) => _medicos = medicos;
 
    [HttpGet("medicos")]
